@@ -747,33 +747,16 @@ public class ThreePrisonersDilemma {
 		}
 	}
 	class YangLinRamal_Isaac_Player extends Player {
-		//Flags 
-		boolean opp1Def = false;
-		boolean opp2Def = false;
-
-		//Main decision process
-		int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
-
-			//Co-operate on first turn
-			if(n==0)
+		boolean opp1Def = false,opp2Def = false;  //Flags
+    	int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
+			if(n==0)    //Co-operate on first turn
 				return 0;
-
-			//Check if opponents defect on previous turn
-			if(oppHistory1[n-1]>0)	
-				opp1Def = true;
-			if(oppHistory2[n-1]>0)
-				opp2Def = true;
-
-			//If both have defected, we permanently defect
-			if(opp1Def && opp2Def)
-				return 1;
-
+			opp1Def = (oppHistory1[n-1]>0 || opp1Def); //Check if opponents defect on previous turn
+			opp2Def = (oppHistory2[n-1]>0 || opp2Def);
+			return (opp1Def&&opp2Def)||(n>=109) ? 1 : 0; 
+			//If both have defected, we permanently defect;
 			//We defect on the last turn to protect ourselves from last minute defectors
-			if(n >= 109)
-				return 1;
-
 			//Otherwise co-operate by default
-			return 0;
 		}
 	}
 	class testPlayer3_2 extends Player {
@@ -1020,7 +1003,7 @@ public class ThreePrisonersDilemma {
 	 you will need to add a new entry to makePlayer, and change numPlayers.*/
 
 	 int counter = 0;
-	int numPlayers = 7;
+	int numPlayers = 19;
 
 	//Make sure your player is under Case 0 for win/loss results to display accurately
 	Player makePlayer(int which) {
@@ -1060,39 +1043,39 @@ public class ThreePrisonersDilemma {
 
 
 		//FOR TESTING AGAINST HIGH SKILL CAP PLAYERS
-		// case 0: return new YangLinRamal_Isaac_Player();
-		// case 1: return new Naing_Htet_Player();
-		// case 2: return new Huang_KyleJunyuan_Player();
-		// case 3: return new CopyKittenPlayer();
-		// case 4: return new testPlayer3();
-		// case 5: return new TiltNRecover();
-		// case 6: return new TiltNRecover2();
-		// case 7: return new testPlayer3_2();
-		// case 8: return new testPlayer5();
-		// case 9: return new tsKennethTeo_Player();
-		// case 10: return new Ngo_Jason_Player();
-		// case 11: return new Chen_Zhiwei_Player();
-		// case 12: return new ViswenPlayer();
-		// //defaults
-		// case 13: return new T4TPlayer();
-		// case 14: return new NicePlayer();
-		// case 15: return new NastyPlayer();
-		// case 16: return new RandomPlayer();
-		// case 17: return new TolerantPlayer();
-		// case 18: return new FreakyPlayer();
-		// //defaults end
+		case 0: return new YangLinRamal_Isaac_Player();
+		case 1: return new Naing_Htet_Player();
+		case 2: return new Huang_KyleJunyuan_Player();
+		case 3: return new CopyKittenPlayer();
+		case 4: return new testPlayer3();
+		case 5: return new TiltNRecover();
+		case 6: return new TiltNRecover2();
+		case 7: return new testPlayer3_2();
+		case 8: return new testPlayer5();
+		case 9: return new tsKennethTeo_Player();
+		case 10: return new Ngo_Jason_Player();
+		case 11: return new Chen_Zhiwei_Player();
+		case 12: return new ViswenPlayer();
+		//defaults
+		case 13: return new T4TPlayer();
+		case 14: return new NicePlayer();
+		case 15: return new NastyPlayer();
+		case 16: return new RandomPlayer();
+		case 17: return new TolerantPlayer();
+		case 18: return new FreakyPlayer();
+		//defaults end
 
 
 		//FOR TESTING AGAINST DEFAULT PLAYERS
-		case 0: return new YangLinRamal_Isaac_Player();
-		//defaults
-		case 1: return new NicePlayer();
-		case 2: return new NastyPlayer();
-		case 3: return new FreakyPlayer();
-		case 4: return new RandomPlayer();
-		case 5: return new TolerantPlayer();
-		case 6: return new T4TPlayer();
-		//defaults end
+		// case 0: return new YangLinRamal_Isaac_Player();
+		// //defaults
+		// case 1: return new NicePlayer();
+		// case 2: return new NastyPlayer();
+		// case 3: return new FreakyPlayer();
+		// case 4: return new RandomPlayer();
+		// case 5: return new TolerantPlayer();
+		// case 6: return new T4TPlayer();
+		// //defaults end
 		}
 		throw new RuntimeException("Bad argument passed to makePlayer");
 	}
