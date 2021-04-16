@@ -747,18 +747,32 @@ public class ThreePrisonersDilemma {
 		}
 	}
 	class YangLinRamal_Isaac_Player extends Player {
-		//NicePlayer always cooperates
+		//Flags 
 		boolean opp1Def = false;
 		boolean opp2Def = false;
+
+		//Main decision process
 		int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
+
+			//Co-operate on first turn
 			if(n==0)
 				return 0;
+
+			//Check if opponents defect on previous turn
 			if(oppHistory1[n-1]>0)	
 				opp1Def = true;
 			if(oppHistory2[n-1]>0)
 				opp2Def = true;
+
+			//If both have defected, we permanently defect
 			if(opp1Def && opp2Def)
 				return 1;
+
+			//We defect on the last turn to protect ourselves from last minute defectors
+			if(n >= 109)
+				return 1;
+
+			//Otherwise co-operate by default
 			return 0;
 		}
 	}
@@ -775,7 +789,7 @@ public class ThreePrisonersDilemma {
 				opp2Def = true;
 			if(opp1Def && opp2Def)
 				return 1;
-			if(n >= 109)
+			if(n >= 108)
 				return 1;
 			return 0;
 		}
@@ -1006,7 +1020,7 @@ public class ThreePrisonersDilemma {
 	 you will need to add a new entry to makePlayer, and change numPlayers.*/
 
 	 int counter = 0;
-	int numPlayers = 19;
+	int numPlayers = 7;
 
 	//Make sure your player is under Case 0 for win/loss results to display accurately
 	Player makePlayer(int which) {
@@ -1018,14 +1032,14 @@ public class ThreePrisonersDilemma {
 		//case 2: return new Naing_Htet_Player(which);
 		//case 3: return new Chen_Zhiwei_Player(which);
 		//case 4: return new tsKennethTeo_Player(which);
-		//defaults
+		////defaults
 		//case 5: return new T4TPlayer(which);
 		//case 6: return new NicePlayer(which);
 		//case 7: return new NastyPlayer(which);
 		//case 8: return new RandomPlayer(which);
 		//case 9: return new TolerantPlayer(which);
 		//case 10: return new FreakyPlayer(which);
-		//defaults end
+		////defaults end
 		//case 11: return new Huang_KyleJunyuan_Player(which);
 		//case 12: return new randomTilt(which);
 		//case 13: return new CopyKittenPlayer(which);
@@ -1046,38 +1060,38 @@ public class ThreePrisonersDilemma {
 
 
 		//FOR TESTING AGAINST HIGH SKILL CAP PLAYERS
-		case 0: return new YangLinRamal_Isaac_Player();
-		case 1: return new Naing_Htet_Player();
-		case 2: return new Huang_KyleJunyuan_Player();
-		case 3: return new CopyKittenPlayer();
-		case 4: return new testPlayer3();
-		case 5: return new TiltNRecover();
-		case 6: return new TiltNRecover2();
-		case 7: return new testPlayer3_2();
-		case 8: return new testPlayer5();
-		case 9: return new tsKennethTeo_Player();
-		case 10: return new Ngo_Jason_Player();
-		case 11: return new Chen_Zhiwei_Player();
-		case 12: return new ViswenPlayer();
-		//defaults
-		case 13: return new T4TPlayer();
-		case 14: return new NicePlayer();
-		case 15: return new NastyPlayer();
-		case 16: return new RandomPlayer();
-		case 17: return new TolerantPlayer();
-		case 18: return new FreakyPlayer();
-		//defaults end
+		// case 0: return new YangLinRamal_Isaac_Player();
+		// case 1: return new Naing_Htet_Player();
+		// case 2: return new Huang_KyleJunyuan_Player();
+		// case 3: return new CopyKittenPlayer();
+		// case 4: return new testPlayer3();
+		// case 5: return new TiltNRecover();
+		// case 6: return new TiltNRecover2();
+		// case 7: return new testPlayer3_2();
+		// case 8: return new testPlayer5();
+		// case 9: return new tsKennethTeo_Player();
+		// case 10: return new Ngo_Jason_Player();
+		// case 11: return new Chen_Zhiwei_Player();
+		// case 12: return new ViswenPlayer();
+		// //defaults
+		// case 13: return new T4TPlayer();
+		// case 14: return new NicePlayer();
+		// case 15: return new NastyPlayer();
+		// case 16: return new RandomPlayer();
+		// case 17: return new TolerantPlayer();
+		// case 18: return new FreakyPlayer();
+		// //defaults end
 
 
 		//FOR TESTING AGAINST DEFAULT PLAYERS
-		// case 0: return new YangLinRamal_Isaac_Player();
+		case 0: return new YangLinRamal_Isaac_Player();
 		//defaults
-		// case 1: return new T4TPlayer();
-		// case 2: return new NicePlayer();
-		// case 3: return new NastyPlayer();
-		// case 4: return new RandomPlayer();
-		// case 5: return new TolerantPlayer();
-		// case 6: return new FreakyPlayer();
+		case 1: return new NicePlayer();
+		case 2: return new NastyPlayer();
+		case 3: return new FreakyPlayer();
+		case 4: return new RandomPlayer();
+		case 5: return new TolerantPlayer();
+		case 6: return new T4TPlayer();
 		//defaults end
 		}
 		throw new RuntimeException("Bad argument passed to makePlayer");
@@ -1094,11 +1108,11 @@ public class ThreePrisonersDilemma {
 
 	void runTournament() {
 		float[] totalScore = new float[numPlayers];
-		int[][] lossRecored = new int[numPlayers][2];
+		int[][] lossRecored = new int[numPlayers][3];
 		// This loop plays each triple of players against each other.
 		// Note that we include duplicates: two copies of your strategy will play once
 		// against each other strategy, and three copies of your strategy will play once.
-		int repeat = 1000;
+		int repeat = 100;
 		for(int x = 0; x < repeat; x++)
 		{
 			for (int i=0; i<numPlayers; i++) for (int j=i; j<numPlayers; j++) for (int k=j; k<numPlayers; k++) {
@@ -1117,6 +1131,10 @@ public class ThreePrisonersDilemma {
 						lossRecored[j][0]++;
 					if(matchResults[0] < matchResults[2])
 						lossRecored[k][0]++;
+					if(matchResults[0] == matchResults[1])
+						lossRecored[j][2]++;
+					if(matchResults[0] == matchResults[2])
+						lossRecored[k][2]++;
 					lossRecored[j][1]++;
 					lossRecored[k][1]++;
 				}
@@ -1126,6 +1144,10 @@ public class ThreePrisonersDilemma {
 						lossRecored[i][0]++;
 					if(matchResults[1] < matchResults[2])
 						lossRecored[k][0]++;
+					if(matchResults[1] == matchResults[0])
+						lossRecored[i][2]++;
+					if(matchResults[1] == matchResults[2])
+						lossRecored[k][2]++;
 					lossRecored[i][1]++;
 					lossRecored[k][1]++;
 				}
@@ -1135,6 +1157,10 @@ public class ThreePrisonersDilemma {
 						lossRecored[j][0]++;
 					if(matchResults[2] < matchResults[0])
 						lossRecored[i][0]++;
+					if(matchResults[2] == matchResults[1])
+						lossRecored[j][2]++;
+					if(matchResults[2] == matchResults[0])
+						lossRecored[i][2]++;
 					lossRecored[j][1]++;
 					lossRecored[i][1]++;
 				}
@@ -1168,7 +1194,7 @@ public class ThreePrisonersDilemma {
 				+ totalScore[sortedOrder[i]]/repeat + " points.");
 		System.out.println("\n");
 		for(int i = 0; i< numPlayers; i++)
-			System.out.println("Player " + makePlayer(i).name() + " wins against me : " + lossRecored[i][0] + " / " +  lossRecored[i][1]);
+			System.out.println("Player " + makePlayer(i).name()+" || Wins: "+ (lossRecored[i][1] - (lossRecored[i][2]+lossRecored[i][0])) + " | Losses: " + lossRecored[i][0] + " | Ties: " +  lossRecored[i][2]+ " | Total Matches: " +  lossRecored[i][1]+"||");
 	} // end of runTournament()
 } // end of class PrisonersDilemma
 
