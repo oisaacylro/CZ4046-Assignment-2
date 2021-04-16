@@ -43,29 +43,18 @@ public class ThreePrisonersDilemma {
 
 
 	abstract class Player {
-		int id = 0;
 		// This procedure takes in the number of rounds elapsed so far (n), and
 		// the previous plays in the match, and returns the appropriate action.
 		int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
 			throw new RuntimeException("You need to override the selectAction method.");
-		}
-		public Player(int id){
-			this.id = id;
 		}
 		// Used to extract the name of this player class.
 		final String name() {
 			String result = getClass().getName();
 			return result.substring(result.indexOf('$')+1);
 		}
-		int getID()
-		{
-			return -1;
-		}
 	}
 	class Chen_Zhiwei_Player extends Player {
-		 public Chen_Zhiwei_Player(int id) {
-			super(id);
-		}
 
 		int[][][] payoff = {
 			{{6,3},  //payoffs when first and second players cooperate
@@ -135,9 +124,6 @@ public class ThreePrisonersDilemma {
 		}
 	}
 	class Ngo_Jason_Player extends Player{ // extends Player
-		public Ngo_Jason_Player(int id) {
-		   super(id);
-	   }
 
 		int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
 			if (n == 0)
@@ -191,11 +177,6 @@ public class ThreePrisonersDilemma {
 		}
 	}
 	class Huang_KyleJunyuan_Player extends Player {
-		public Huang_KyleJunyuan_Player(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
-
 		// Helper function to calculate percentage of cooperation
 		float calCoopPercentage(int[] history) {
 			int cooperates = 0;
@@ -232,10 +213,6 @@ public class ThreePrisonersDilemma {
 		}
 	}
 	class Naing_Htet_Player extends Player {
-        public Naing_Htet_Player(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
 
 		int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
 
@@ -267,10 +244,6 @@ public class ThreePrisonersDilemma {
         }
     }
 	class tsKennethTeo_Player extends Player {
-		public tsKennethTeo_Player(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
 
 	// A Tolerant Tit for Tat player that considers action of both
 		// opponents instead of just looking at one.
@@ -311,10 +284,6 @@ public class ThreePrisonersDilemma {
 		}
 	}
 	class randomTilt extends Player{
-		public randomTilt(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
 		boolean defected = false;
 		int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
 
@@ -348,10 +317,6 @@ public class ThreePrisonersDilemma {
 		}
 	}
 	class testPlayer extends Player{
-		public testPlayer(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
 		boolean defected = false;
 		int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
 
@@ -377,11 +342,7 @@ public class ThreePrisonersDilemma {
 			return 0;
 		}
 	}
-	class YangLinRamal_Isaac_Player3 extends Player{
-		public YangLinRamal_Isaac_Player3(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
+	class testPlayer3 extends Player{
 		boolean defected = false;
 		int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
 
@@ -406,10 +367,6 @@ public class ThreePrisonersDilemma {
 		}
 	}
 	class YangLinRamal_Isaac_Player108 extends Player{
-		public YangLinRamal_Isaac_Player108(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
 		boolean defected = false;
 		int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
 
@@ -434,10 +391,6 @@ public class ThreePrisonersDilemma {
 		}
 	}
 	class YangLinRamal_Isaac_Player105 extends Player{
-		public YangLinRamal_Isaac_Player105(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
 		boolean defected = false;
 		int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
 
@@ -462,10 +415,6 @@ public class ThreePrisonersDilemma {
 		}
 	}
 	class TiltNRecover extends Player{
-		public TiltNRecover(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
 		boolean defected = false;
 		int recovery = 0;
 		int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
@@ -494,26 +443,26 @@ public class ThreePrisonersDilemma {
 		}
 	}
 	class TiltNRecover2 extends Player{
-		public TiltNRecover2(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
 		boolean defected = false;
 		int recovery = 0;
 		int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
 
-			//return 1 if defected
 			if(defected)
 			{
+				//recover after a set amount of turns
 				recovery++;
+
+				//return 1 if defected and recovery not reached
 				if(recovery < 8)
 					return 1;
+				
+				//recovery reached, stop defecting for now
 				defected = false;
 			}
 
-			//if first turn, co operate
+			//check if any opponents defected in previous round
 			if(n > 0){
-				//if any opponent defects, we permanently defect
+				//if any opponent defects, we defect until recovery point reached
 				if(oppHistory1[n-1] > 0 || oppHistory2[n-1] > 0)
 				{
 					defected = true;
@@ -521,15 +470,11 @@ public class ThreePrisonersDilemma {
 					return 1;
 				}
 			}
-			//if opps consistently co op, we also co op
+			//coop by default
 			return 0;
 		}
 	}
 	class Thanos extends Player{
-		public Thanos(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
 		int balancer = 0;
 		int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
 
@@ -553,10 +498,6 @@ public class ThreePrisonersDilemma {
 		}
 	}
 	class PatternPlayer1 extends Player{
-		public PatternPlayer1(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
 		int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
 
 			if(n==0)
@@ -569,10 +510,6 @@ public class ThreePrisonersDilemma {
 		}
 	}
 	class PatternPlayer2 extends Player{
-		public PatternPlayer2(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
 		int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
 
 			if(n==0)
@@ -585,10 +522,6 @@ public class ThreePrisonersDilemma {
 		}
 	}
 	class PatternPlayer3 extends Player{
-		public PatternPlayer3(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
 		int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
 
 			if(n==0)
@@ -601,10 +534,6 @@ public class ThreePrisonersDilemma {
 		}
 	}
 	class PatternPlayer4 extends Player{
-		public PatternPlayer4(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
 		int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
 
 			if(n==0)
@@ -616,7 +545,7 @@ public class ThreePrisonersDilemma {
 			return 0;
 		}
 	}
-	class YangLinRamal_Isaac_Player2 extends Player{
+	class YangLinRamal_Isaac_Player10 extends Player{
 		/*
 		Order of best scenarios
 		Self  OppCoop	OppDefect	Points
@@ -627,12 +556,6 @@ public class ThreePrisonersDilemma {
 		D		0		2			2
 		C		0		2			0
 		*/
-
-		public YangLinRamal_Isaac_Player2(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
-
 		int[][][] opp1Style = {{{0,0},{0,0}},{{0,0},{0,0}}};
 		int[][][] opp2Style = {{{0,0},{0,0}},{{0,0},{0,0}}};
 
@@ -791,10 +714,6 @@ public class ThreePrisonersDilemma {
 		}
 	}
 	class testPlayer4 extends Player {
-		public testPlayer4(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
 		int k = 1;
 		//NicePlayer always cooperates
 		int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
@@ -816,10 +735,6 @@ public class ThreePrisonersDilemma {
 		}
 	}
 	class RetardPlayer extends Player {
-		public RetardPlayer(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
 		int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
 
 			if(n == 0)
@@ -832,10 +747,6 @@ public class ThreePrisonersDilemma {
 		}
 	}
 	class YangLinRamal_Isaac_Player extends Player {
-		public YangLinRamal_Isaac_Player(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
 		//NicePlayer always cooperates
 		boolean opp1Def = false;
 		boolean opp2Def = false;
@@ -852,10 +763,6 @@ public class ThreePrisonersDilemma {
 		}
 	}
 	class testPlayer3_2 extends Player {
-		public testPlayer3_2(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
 		//NicePlayer always cooperates
 		boolean opp1Def = false;
 		boolean opp2Def = false;
@@ -874,10 +781,6 @@ public class ThreePrisonersDilemma {
 		}
 	}
 	class testPlayer5 extends Player {
-		public testPlayer5(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
 		//NicePlayer always cooperates
 		boolean opp1Def = false;
 		boolean opp2Def = false;
@@ -904,10 +807,6 @@ public class ThreePrisonersDilemma {
 	/* Here are four simple strategies: */
 
 	class NicePlayer extends Player {
-		public NicePlayer(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
 
 		//NicePlayer always cooperates
 		int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
@@ -915,21 +814,12 @@ public class ThreePrisonersDilemma {
 		}
 	}
 	class NastyPlayer extends Player {
-		public NastyPlayer(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
-
 		//NastyPlayer always defects
 		int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
 			return 1;
 		}
 	}
 	class RandomPlayer extends Player {
-		public RandomPlayer(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
 
 		//RandomPlayer randomly picks his action each time
 		int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
@@ -940,10 +830,6 @@ public class ThreePrisonersDilemma {
 		}
 	}
 	class TolerantPlayer extends Player {
-		public TolerantPlayer(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
 
 		//TolerantPlayer looks at his opponents' histories, and only defects
 		//if at least half of the other players' actions have been defects
@@ -973,8 +859,7 @@ public class ThreePrisonersDilemma {
 		//either to always be nice or always be nasty.
 		//Note that this class has a non-trivial constructor.
 		int action;
-		FreakyPlayer(int id) {
-			super(id);
+		FreakyPlayer() {
 			if (Math.random() < 0.5)
 				action = 0;  //cooperates half the time
 			else
@@ -986,11 +871,6 @@ public class ThreePrisonersDilemma {
 		}
 	}
 	class T4TPlayer extends Player {
-		public T4TPlayer(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
-
 		//Picks a random opponent at each play,
 		//and uses the 'tit-for-tat' strategy against them
 		int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
@@ -1002,14 +882,22 @@ public class ThreePrisonersDilemma {
 		}
 	}
 	
+	class ViswenPlayer extends Player{
 
+		//NicePlayer always cooperates
+		int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
+			if(n==0)
+				return 0;
+			if(n>=90)
+				return 1;
+			if(oppHistory1[n-1] + oppHistory2[n-1] > 1)
+				return 1;
+			return 0;
+		}
+	}
 
 
 	class SusT4TPlayer extends Player {
-		public SusT4TPlayer(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
 
 		//Picks a random opponent at each play,
 		//and uses the 'tit-for-tat' strategy against them
@@ -1022,10 +910,6 @@ public class ThreePrisonersDilemma {
 		}
 	}
 	class SoftMajority extends Player {
-		public SoftMajority(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
 
 		int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
 			int selfDefect = 0;
@@ -1045,11 +929,6 @@ public class ThreePrisonersDilemma {
 		}
 	}
 	class SoftMajorityAvg extends Player {
-		public SoftMajorityAvg(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
-
 		int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
 			int selfDefect = 0;
 			int opponentCoop = 0;
@@ -1068,10 +947,6 @@ public class ThreePrisonersDilemma {
 		}
 	}
 	class CopyKittenPlayer extends Player{
-		public CopyKittenPlayer(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
 
 		int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
 			if (n==0) return 0; //cooperate by default
@@ -1087,10 +962,6 @@ public class ThreePrisonersDilemma {
 		}
 	}
 	class CopyCatPlayer extends Player{
-		public CopyCatPlayer(int id) {
-			super(id);
-			//TODO Auto-generated constructor stub
-		}
 
 		int selectAction(int n, int[] myHistory, int[] oppHistory1, int[] oppHistory2) {
 			if (n==0) return 0; //cooperate by default
@@ -1135,9 +1006,13 @@ public class ThreePrisonersDilemma {
 	 you will need to add a new entry to makePlayer, and change numPlayers.*/
 
 	 int counter = 0;
-	int numPlayers = 7;
+	int numPlayers = 19;
+
+	//Make sure your player is under Case 0 for win/loss results to display accurately
 	Player makePlayer(int which) {
 		switch (which){
+
+		//FOR TESTING AGAINST ALL CREATED PLAYERS
 		//case 0: return new YangLinRamal_Isaac_Player(which);
 		//case 1: return new Ngo_Jason_Player(which);
 		//case 2: return new Naing_Htet_Player(which);
@@ -1169,86 +1044,41 @@ public class ThreePrisonersDilemma {
 		//case 26: return new SoftMajorityAvg(which);
 		//case 27: return new SusT4TPlayer(which);
 
-		// case 0: return new YangLinRamal_Isaac_Player(which);
-		// case 1: return new Naing_Htet_Player(which);
-		// case 2: return new Huang_KyleJunyuan_Player(which);
-		// case 3: return new CopyKittenPlayer(which);
-		// case 4: return new testPlayer3(which);
-		// case 5: return new TiltNRecover(which);
-		// case 6: return new TiltNRecover2(which);
-		// case 7: return new testPlayer3_2(which);
-		// case 8: return new testPlayer5(which);
-		// case 9: return new tsKennethTeo_Player(which);
-		// case 10: return new Ngo_Jason_Player(which);
-		// case 11: return new Chen_Zhiwei_Player(which);
-		case 0: return new YangLinRamal_Isaac_Player(which);
+
+		//FOR TESTING AGAINST HIGH SKILL CAP PLAYERS
+		case 0: return new YangLinRamal_Isaac_Player();
+		case 1: return new Naing_Htet_Player();
+		case 2: return new Huang_KyleJunyuan_Player();
+		case 3: return new CopyKittenPlayer();
+		case 4: return new testPlayer3();
+		case 5: return new TiltNRecover();
+		case 6: return new TiltNRecover2();
+		case 7: return new testPlayer3_2();
+		case 8: return new testPlayer5();
+		case 9: return new tsKennethTeo_Player();
+		case 10: return new Ngo_Jason_Player();
+		case 11: return new Chen_Zhiwei_Player();
+		case 12: return new ViswenPlayer();
 		//defaults
-		case 1: return new T4TPlayer(which);
-		case 2: return new NicePlayer(which);
-		case 3: return new NastyPlayer(which);
-		case 4: return new RandomPlayer(which);
-		case 5: return new TolerantPlayer(which);
-		case 6: return new FreakyPlayer(which);
+		case 13: return new T4TPlayer();
+		case 14: return new NicePlayer();
+		case 15: return new NastyPlayer();
+		case 16: return new RandomPlayer();
+		case 17: return new TolerantPlayer();
+		case 18: return new FreakyPlayer();
 		//defaults end
-		// case 7: return new YangLinRamal_Isaac_Player(which);
-		// case 8: return new YangLinRamal_Isaac_Player(which);
-		// case 9: return new YangLinRamal_Isaac_Player(which);
-		// case 10: return new YangLinRamal_Isaac_Player(which);
-		// case 11: return new T4TPlayer(which);
-		// case 12: return new NastyPlayer(which);
-		// case 13: return new RandomPlayer(which);
-		// case 14: return new TolerantPlayer(which);
-		// case 15: return new FreakyPlayer(which);
-		// case 16: return new NicePlayer(which);
-		// case 17: return new Naing_Htet_Player(which);
-		// case 18: return new Huang_KyleJunyuan_Player(which);
-		// case 19: return new CopyKittenPlayer(which);
-		// case 20: return new testPlayer3(which);
-		// case 21: return new TiltNRecover(which);
-		// case 22: return new TiltNRecover2(which);
-		// case 23: return new Naing_Htet_Player(which);
-		// case 24: return new Huang_KyleJunyuan_Player(which);
-		// case 25: return new CopyKittenPlayer(which);
-		// case 26: return new testPlayer3(which);
-		// case 27: return new TiltNRecover(which);
-		// case 28: return new TiltNRecover2(which);
-		// case 29: return new Naing_Htet_Player(which);
-		// case 30: return new Huang_KyleJunyuan_Player(which);
-		// case 31: return new CopyKittenPlayer(which);
-		// case 32: return new testPlayer3(which);
-		// case 33: return new TiltNRecover(which);
-		// case 34: return new TiltNRecover2(which);
-		// case 35: return new Naing_Htet_Player(which);
-		// case 36: return new Huang_KyleJunyuan_Player(which);
-		// case 37: return new CopyKittenPlayer(which);
-		// case 38: return new testPlayer3(which);
-		// case 39: return new TiltNRecover(which);
-		// case 40: return new TiltNRecover2(which);
-		// case 41: return new testPlayer3_2(which);
-		// case 42: return new testPlayer3_2(which);
-		// case 43: return new testPlayer3_2(which);
-		// case 44: return new testPlayer3_2(which);
-		// case 45: return new testPlayer3_2(which);
-		// case 46: return new testPlayer5(which);
-		// case 47: return new testPlayer5(which);
-		// case 48: return new testPlayer5(which);
-		// case 49: return new testPlayer5(which);
-		// case 50: return new testPlayer5(which);
-		
-		// case 11: return new YangLinRamal_Isaac_Player108(which);
-		// case 12: return new YangLinRamal_Isaac_Player108(which);
-		// case 13: return new YangLinRamal_Isaac_Player108(which);
-		// case 14: return new YangLinRamal_Isaac_Player108(which);
-		// case 15: return new YangLinRamal_Isaac_Player108(which);
-		// case 22: return new YangLinRamal_Isaac_Player105(which);
-		// case 23: return new YangLinRamal_Isaac_Player105(which);
-		// case 24: return new YangLinRamal_Isaac_Player105(which);
-		// case 25: return new YangLinRamal_Isaac_Player105(which);
-		// case 26: return new YangLinRamal_Isaac_Player105(which);
-		
 
 
-
+		//FOR TESTING AGAINST DEFAULT PLAYERS
+		// case 0: return new YangLinRamal_Isaac_Player();
+		//defaults
+		// case 1: return new T4TPlayer();
+		// case 2: return new NicePlayer();
+		// case 3: return new NastyPlayer();
+		// case 4: return new RandomPlayer();
+		// case 5: return new TolerantPlayer();
+		// case 6: return new FreakyPlayer();
+		//defaults end
 		}
 		throw new RuntimeException("Bad argument passed to makePlayer");
 	}
@@ -1338,7 +1168,7 @@ public class ThreePrisonersDilemma {
 				+ totalScore[sortedOrder[i]]/repeat + " points.");
 		System.out.println("\n");
 		for(int i = 0; i< numPlayers; i++)
-			System.out.println("Player " + i+ " wins against me : " + lossRecored[i][0] + " / " +  lossRecored[i][1]);
+			System.out.println("Player " + makePlayer(i).name() + " wins against me : " + lossRecored[i][0] + " / " +  lossRecored[i][1]);
 	} // end of runTournament()
 } // end of class PrisonersDilemma
 
